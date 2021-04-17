@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import Responsive from "../../components/layout/Responsive";
 
-const Portfolio = () => <h1>포트폴리오</h1>;
+const Portfolio = () => (
+  <Responsive>
+    <h1>portfolio</h1>
+  </Responsive>
+);
 
 export default Portfolio;
