@@ -8,7 +8,7 @@ const Header = () => (
     <header>
       <Responsive className="header-inner-container">
         <div className="header-left">
-          <span>ZERONINE</span>
+          <Link to="/">ZERONINE</Link>
         </div>
         <div className="header-center">
           <Link to="/">About</Link>
@@ -53,12 +53,8 @@ const StyledHeader = styled.div`
         text-decoration: none;
       }
 
-      .header-right,
       .header-left {
-        width: 10rem;
-      }
-
-      .header-left {
+        margin-right: 2rem;
         font-weight: bold;
         font-size: 1.5rem;
       }
@@ -71,6 +67,7 @@ const StyledHeader = styled.div`
       }
 
       .header-right {
+        margin-left: 2rem;
         display: flex;
         align-items: center;
         justify-content: flex-end;
