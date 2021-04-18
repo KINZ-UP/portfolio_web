@@ -1,3 +1,9 @@
+html {
+  @media screen and (max-width: 568px) {
+    font-size: 39%;
+  }
+}
+
 body {
   margin: 0;
   font-family: "Montserrat", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
@@ -11,6 +17,24 @@ code {
     monospace;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "SsangMunDong", "Montserrat";
+}
+
+h1 {
+  margin: 1rem 0;
+}
 /* :root {
   --header-height: 10rem;
 } */
