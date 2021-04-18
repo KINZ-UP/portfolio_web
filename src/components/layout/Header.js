@@ -1,34 +1,42 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Responsive from "./Responsive";
 import GithubIcon from "../../assets/icons/github_icon_60_60.png";
-const Header = () => (
-  <StyledHeader>
-    <header>
-      <Responsive className="header-inner-container">
-        <div className="header-left">
-          <Link to="/">ZERONINE</Link>
-        </div>
-        <div className="header-center">
-          <Link to="/">About</Link>
-          <Link to="/portfolio">Portfolio</Link>
-          <Link to="/blog">Blog</Link>
-        </div>
-        <div className="header-right">
-          <a href="https://kinz-up.github.io" target="_blank" rel="noreferrer">
-            <img src={GithubIcon} alt="github" />
-          </a>
-        </div>
-      </Responsive>
-    </header>
-    <div className="header-spacer"></div>
-  </StyledHeader>
-);
+const Header = () => {
+  return (
+    <StyledHeader>
+      <header>
+        <Responsive className="header-inner-container">
+          <div className="header-center">
+            <NavLink to="/about" activeClassName="current">
+              About
+            </NavLink>
+            <NavLink to="/portfolio" activeClassName="current">
+              Portfolio
+            </NavLink>
+            <NavLink to="/blog" activeClassName="current">
+              Blog
+            </NavLink>
+          </div>
+          <div className="header-right">
+            <a
+              href="https://kinz-up.github.io"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={GithubIcon} alt="github" />
+            </a>
+          </div>
+        </Responsive>
+      </header>
+      <div className="header-spacer"></div>
+    </StyledHeader>
+  );
+};
 
 const StyledHeader = styled.div`
   --header-height: 4rem;
-  width: 100vw;
   font-size: 1.2rem;
   font-weight: 500;
   font-family: "Montserrat";
@@ -62,15 +70,23 @@ const StyledHeader = styled.div`
       .header-center {
         flex: 1;
         max-width: 22rem;
+        background: #222;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+
+        .current {
+          border-bottom: 1px solid #fff;
+          font-weight: bold;
+        }
       }
 
       .header-right {
-        margin-left: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
+        /* margin-left: 2rem; */
+        /* display: flex; */
+        /* align-items: center; */
+        /* justify-content: flex-end; */
 
         img {
           height: var(--header-height);

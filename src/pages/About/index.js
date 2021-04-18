@@ -108,6 +108,7 @@ const StyledAbout = styled.div`
       padding-bottom: 0.5rem;
       height: 2.5rem;
       filter: brightness(1.4);
+      z-index: -1;
     }
   }
 
