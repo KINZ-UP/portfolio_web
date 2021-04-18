@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Responsive from "../../components/layout/Responsive";
+import PageContainer from "../../components/layout/PageContainer";
 
 const Portfolio = () => (
-  <Responsive>
+  <PageContainer>
     <h1>portfolio</h1>
-  </Responsive>
+  </PageContainer>
 );
 
 export default Portfolio;

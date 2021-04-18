@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Responsive from "../../components/layout/Responsive";
+import PageContainer from "../../components/layout/PageContainer";
 
 const Blog = () => (
-  <Responsive>
+  <PageContainer>
     <h1>Blog</h1>
-  </Responsive>
+  </PageContainer>
 );
 
 export default Blog;
