@@ -22,10 +22,10 @@ const About = () => {
             <h2 className="sub-title">Introduction</h2>
             <ul className="sub-section-content">
               <li>안녕하세요! 1년차 프론트엔드 개발자 구인영입니다.</li>
-              <li>UI / UX 에 대해 고민하는 개발자</li>
+              <li>UI / UX 등 사용자 경험을 중시하면서 개발합니다.</li>
               <li>가능하면 Scratch 부터 개발하는 것을 좋아합니다.</li>
               <li>
-                항상 가독성과 확장성을 중시한 코드를 짜기 위해 노력합니다.
+                항상 가독성과 확장성을 고려한 코드를 짜기 위해 노력합니다.
               </li>
               <li>Canvas API를 이용한 토이 프로젝트를 즐겨합니다.</li>
             </ul>
