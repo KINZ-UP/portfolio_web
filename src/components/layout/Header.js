@@ -8,7 +8,7 @@ const Header = () => {
     <StyledHeader>
       <header>
         <Responsive className="header-inner-container">
-          <div className="header-center">
+          <div className="header-left">
             <NavLink to="/about" activeClassName="current">
               About
             </NavLink>
@@ -62,12 +62,6 @@ const StyledHeader = styled.div`
       }
 
       .header-left {
-        margin-right: 2rem;
-        font-weight: bold;
-        font-size: 1.5rem;
-      }
-
-      .header-center {
         flex: 1;
         max-width: 22rem;
         background: #222;
@@ -75,6 +69,7 @@ const StyledHeader = styled.div`
         justify-content: space-between;
         align-items: center;
         padding: 0 1rem;
+        color: #fff;
 
         .current {
           border-bottom: 1px solid #fff;
