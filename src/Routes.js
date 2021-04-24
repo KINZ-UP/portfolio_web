@@ -17,7 +17,7 @@ const Routes = () => {
         <Route exact path={"/about"} component={About} />
         <Route path="/portfolio" component={Portfolio} />
         <Route exact path="/blog" component={Blog} />
-        <Route path="/blog/:id" component={Post} />
+        <Route path="/blog/:_id" component={Post} />
       </Switch>
     </BrowserRouter>
   );
