@@ -1,27 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getPosts } from "../../api/posts";
 import PostItemForm from "./PostItemForm";
-
+import usePromise from "../../lib/usePromise";
+import FetchMore from "./FetchMore";
 const PostListForm = () => {
   const [posts, setPosts] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [isNoMore, setIsNoMore] = useState(false);
+  const observerTarget = useRef(null);
+
+  const [loading, response, error] = usePromise(
+    () => getPosts({ offset, limit: 5 }),
+    [offset]
+  );
 
   useEffect(() => {
-    async function test() {
-      const { data } = await getPosts();
-      setPosts(data);
+    if (response) {
+      setPosts((posts) => [...posts, ...response]);
+      if (response.length === 0) setIsNoMore(true);
     }
-    test();
-  }, []);
+  }, [response]);
+
+  if (error) return <p>error</p>;
+
   return (
     <StyledPostListForm>
       {posts.map((post) => (
-        <PostItemForm key={post.id} post={post} />
+        <PostItemForm key={post._id} post={post} />
       ))}
+      <FetchMore loading={loading} isNoMore={isNoMore} setOffset={setOffset} />
     </StyledPostListForm>
   );
 };
 
-const StyledPostListForm = styled.div``;
+const StyledPostListForm = styled.div`
+  .fetchMore-target {
+    height: 0.5rem;
+    background: red;
+  }
+`;
 
 export default PostListForm;

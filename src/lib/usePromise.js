@@ -8,6 +8,7 @@ export default function usePromise(promiseCreater, deps) {
   useEffect(() => {
     async function request() {
       try {
+        setLoading(true);
         const resp = await promiseCreater();
         setResponse(resp.data);
       } catch (e) {

@@ -1,6 +1,7 @@
 import client from "./client";
 
-export const getPosts = () => client.get("/posts");
+export const getPosts = ({ offset, limit }) =>
+  client.get(`/posts?offset=${offset || 0}&limit=${limit || 5}`);
 
 export const getPostById = (id) => client.get(`/posts/${id}`);
 
