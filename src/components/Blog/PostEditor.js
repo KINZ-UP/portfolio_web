@@ -1,58 +1,18 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-import { createPost } from "../../api/posts";
-
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import hljs from "highlight.js";
 import "highlight.js/styles/stackoverflow-light.css";
-import Responsive from "../layout/Responsive";
-import TagBox from "./TagBox";
-import Button from "../common/Button";
-import Modal from "../common/Button/Modal";
-import SaveModal from "./SaveModal";
 
 hljs.configure({
   languages: ["javascript", "ruby", "python", "rust"],
 });
 
-const PostEditor = ({ history }) => {
+const PostEditor = ({ body, setBody }) => {
   const quillElement = useRef(null);
   const quillInstance = useRef(null);
-
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [tags, setTags] = useState([]);
-
-  const onChangeTitle = (e) => setTitle(e.target.value);
-
-  const onClickSave = useCallback(() => {
-    if (title === "") {
-      alert("제목을 입력하세요");
-      return;
-    }
-    if (body === "") {
-      alert("내용을 입력하세요");
-      return;
-    }
-    setModalVisible(true);
-  }, [body, title]);
-
-  const onCreatePost = useCallback(async () => {
-    try {
-      await createPost({ title, body, tags });
-      history.push("/blog");
-    } catch (err) {
-      console.log(err);
-    }
-  }, [title, body, tags, history]);
 
   const toolbarOptions = useMemo(
     () => [
@@ -91,75 +51,57 @@ const PostEditor = ({ history }) => {
         setBody(quill.root.innerHTML);
       }
     });
-  }, [toolbarOptions]);
+  }, [setBody, toolbarOptions]);
 
   useEffect(() => {
     quillInstance.current.root.innerHTML = body;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [modalVisible, setModalVisible] = useState(false);
   return (
-    <StyledPostEditor>
-      <TitleInput
-        placeholder="제목을 입력하세요"
-        value={title}
-        onChange={onChangeTitle}
-      />
-      <TagBox tags={tags} setTags={setTags} />
-      <QuillWrapper>
-        <div ref={quillElement} />
-      </QuillWrapper>
-      <div className="button-container">
-        <Button onClick={onClickSave}>저장하기</Button>
-      </div>
-      <SaveModal
-        visible={modalVisible}
-        setVisible={setModalVisible}
-        onSave={onCreatePost}
-      />
-    </StyledPostEditor>
+    <QuillWrapper>
+      <div ref={quillElement} />
+    </QuillWrapper>
   );
 };
 
-const StyledPostEditor = styled(Responsive)`
-  padding: 5rem 0;
-  width: min(768px, 100%);
-
-  .button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 0.5rem;
-  }
-`;
-const TitleInput = styled.input`
-  font-size: 2.4rem;
-  outline: none;
-  padding-bottom: 0.5rem;
-  border: none;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 2rem;
-  width: 100%;
-  font-weight: bold;
-  color: #757575;
-`;
 const QuillWrapper = styled.div`
-  /* height: 400px; */
-
   .ql-container {
     border: none;
   }
   .ql-editor {
-    padding-bottom: 0;
-    min-height: 320px;
-    font-size: 1.125rem;
-    line-height: 1.5;
+    height: 500px;
+    overflow: scroll;
     border-bottom: 1px solid #aaa;
+    font-size: 1.125rem;
+    line-height: 180%;
+
+    h2 {
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      margin-left: 3rem;
+    }
+
+    blockquote {
+      border-left: 7px solid #aad;
+      padding: 3px 3px 3px 10px;
+      background: #fcfcfc;
+    }
+
+    pre.ql-syntax {
+      color: #000;
+      background: #f9f9f9;
+      overflow-x: scroll;
+      padding: 10px 15px;
+      border-radius: 10px;
+    }
   }
 
   .ql-toolbar.ql-snow {
     border: none;
-    /* border-bottom: 1px solid #aaa; */
     background: #a8b6ba;
     /* fill: #fff; */
     .ql-picker-options {

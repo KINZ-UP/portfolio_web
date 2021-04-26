@@ -1,17 +1,33 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { createPost } from "../../../api/posts";
+import { getPostById, createPost, updatePost } from "../../../api/posts";
 import PostEditor from "../../../components/Blog/PostEditor";
 import SaveModal from "../../../components/Blog/SaveModal";
 import TagBox from "../../../components/Blog/TagBox";
 import Button from "../../../components/common/Button";
 import Responsive from "../../../components/layout/Responsive";
+import usePromise from "../../../lib/usePromise";
 
-const PostWrite = ({ history }) => {
+const PostEdit = ({ match, history }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tags, setTags] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [loading, response, error] = usePromise(
+    () => getPostById(match.params._id),
+    []
+  );
+
+  useEffect(() => {
+    if (response) {
+      const { title, body, tags } = response;
+      setTitle(title);
+      setBody(body);
+      setTags(tags);
+    }
+  }, [response]);
+
   const onChangeTitle = (e) => setTitle(e.target.value);
 
   const onClickSave = useCallback(() => {
@@ -26,14 +42,16 @@ const PostWrite = ({ history }) => {
     setModalVisible(true);
   }, [body, title]);
 
-  const onCreatePost = useCallback(async () => {
+  const onUpdatePost = useCallback(async () => {
     try {
-      await createPost({ title, body, tags });
+      await updatePost({ id: match.params._id, post: { title, body, tags } });
       history.push("/blog");
     } catch (err) {
       console.log(err);
     }
-  }, [title, body, tags, history]);
+  }, [match.params._id, title, body, tags, history]);
+
+  if (loading) return null;
 
   return (
     <StyledResponsive>
@@ -45,12 +63,12 @@ const PostWrite = ({ history }) => {
       <TagBox tags={tags} setTags={setTags} />
       <PostEditor body={body} setBody={setBody} />
       <div className="button-container">
-        <Button onClick={onClickSave}>저장하기</Button>
+        <Button onClick={onClickSave}>수정하기</Button>
       </div>
       <SaveModal
         visible={modalVisible}
         setVisible={setModalVisible}
-        onSave={onCreatePost}
+        onSave={onUpdatePost}
       />
     </StyledResponsive>
   );
@@ -79,4 +97,4 @@ const TitleInput = styled.input`
   color: #757575;
 `;
 
-export default PostWrite;
+export default PostEdit;

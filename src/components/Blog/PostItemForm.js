@@ -26,7 +26,6 @@ const StyledPostItemForm = styled.div`
   padding: 1rem;
   margin-bottom: 2rem;
   border-bottom: 1px solid #ccc;
-  height: 15rem;
   display: flex;
   flex-direction: column;
 
@@ -38,6 +37,8 @@ const StyledPostItemForm = styled.div`
   .post-body {
     color: #656c72;
     line-height: 160%;
+    min-height: 5rem;
+    margin-bottom: 1rem;
   }
 
   ul.post-tags {

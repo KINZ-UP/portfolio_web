@@ -71,11 +71,6 @@ const StyledArticleBody = styled.div`
     margin-bottom: 1rem;
   }
 
-  p {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-  }
-
   ul {
     margin-left: 3rem;
   }

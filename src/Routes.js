@@ -8,6 +8,7 @@ import Portfolio from "./pages/Portfolio";
 import Blog from "./pages/Blog";
 import Post from "./pages/Post";
 import PostWrite from "./pages/Post/PostWrite";
+import PostEdit from "./pages/Post/PostEdit";
 
 const Routes = () => {
   return (
@@ -19,6 +20,7 @@ const Routes = () => {
         <Route path="/portfolio" component={Portfolio} />
         <Route exact path="/blog" component={Blog} />
         <Route exact path="/blog/write" component={PostWrite} />
+        <Route exact path="/blog/edit/:_id" component={PostEdit} />
         <Route path="/blog/:_id" component={Post} />
       </Switch>
     </BrowserRouter>

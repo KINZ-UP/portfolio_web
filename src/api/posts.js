@@ -6,3 +6,5 @@ export const getPosts = ({ offset, limit }) =>
 export const getPostById = (id) => client.get(`/posts/${id}`);
 
 export const createPost = (post) => client.post("/posts/", post);
+
+export const updatePost = ({ id, post }) => client.patch(`/posts/${id}`, post);
