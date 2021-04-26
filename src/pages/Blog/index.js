@@ -13,6 +13,7 @@ const Blog = () => {
 
 const StyledPageContainer = styled(PageContainer)`
   padding-top: 5rem;
+  width: min(768px, 100%);
 `;
 
 export default Blog;
