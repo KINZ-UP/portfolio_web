@@ -11,11 +11,17 @@ import { createPost } from "../../api/posts";
 
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
+import hljs from "highlight.js";
+import "highlight.js/styles/stackoverflow-light.css";
 import Responsive from "../layout/Responsive";
 import TagBox from "./TagBox";
 import Button from "../common/Button";
 import Modal from "../common/Button/Modal";
 import SaveModal from "./SaveModal";
+
+hljs.configure({
+  languages: ["javascript", "ruby", "python", "rust"],
+});
 
 const PostEditor = ({ history }) => {
   const quillElement = useRef(null);
@@ -72,6 +78,9 @@ const PostEditor = ({ history }) => {
       theme: "snow",
       placeholder: "내용을 작성하세요...",
       modules: {
+        syntax: {
+          highlight: (text) => hljs.highlightAuto(text).value,
+        },
         toolbar: toolbarOptions,
       },
     });

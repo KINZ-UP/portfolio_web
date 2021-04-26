@@ -85,6 +85,13 @@ const StyledArticleBody = styled.div`
     padding: 3px 3px 3px 10px;
     background: #fcfcfc;
   }
+
+  pre.ql-syntax {
+    background: #f9f9f9;
+    overflow-x: scroll;
+    padding: 10px 15px;
+    border-radius: 10px;
+  }
 `;
 
 export default Post;
