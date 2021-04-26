@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef } from "react";
+import styled from "styled-components";
 
 const FetchMore = ({ loading, isNoMore, setOffset }) => {
   const observerTarget = useRef(null);
@@ -17,13 +18,31 @@ const FetchMore = ({ loading, isNoMore, setOffset }) => {
   }, [observer]);
 
   return (
-    <div
+    <FetchMoreTarget
       id="fetchMore"
       className={loading ? "loading" : ""}
       ref={observerTarget}
-      style={{ background: "red", height: "5rem" }}
+      style={{ height: "1px" }}
     />
   );
 };
+
+const FetchMoreTarget = styled.div`
+  &.loading {
+    :after {
+      content: "LOADING";
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      padding: 0.5rem;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      background: #777;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
+`;
 
 export default React.memo(FetchMore);
