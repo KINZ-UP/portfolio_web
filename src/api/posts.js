@@ -8,3 +8,5 @@ export const getPostById = (id) => client.get(`/posts/${id}`);
 export const createPost = (post) => client.post("/posts/", post);
 
 export const updatePost = ({ id, post }) => client.patch(`/posts/${id}`, post);
+
+export const uploadImage = (formData) => client.post("/upload", formData);

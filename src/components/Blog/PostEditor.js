@@ -1,36 +1,83 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import hljs from "highlight.js";
 import "highlight.js/styles/stackoverflow-light.css";
+import { uploadImage } from "../../api/posts";
 
 hljs.configure({
   languages: ["javascript", "ruby", "python", "rust"],
 });
 
-const PostEditor = ({ body, setBody }) => {
+const PostEditor = ({ body, setBody, setQuill }) => {
   const quillElement = useRef(null);
   const quillInstance = useRef(null);
 
-  const toolbarOptions = useMemo(
-    () => [
-      [{ header: [1, 2, 3, false] }],
-      [
-        { align: "" },
-        { align: "center" },
-        { align: "right" },
-        { align: "justify" },
-      ],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["bold", "italic", "underline", "strike"], // toggled buttons
-      ["blockquote", "code-block"],
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+  const imageHandler = useCallback(async () => {
+    const quill = quillInstance.current;
+    const input = document.createElement("input");
 
-      ["clean"], // remove formatting button
-    ],
-    []
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files[0];
+      const formData = new FormData();
+
+      formData.append("image", file);
+
+      // Save current cursor state
+      const range = quill.getSelection(true);
+
+      // Insert temporary loading placeholder image
+      // quill.insertEmbed(range.index, 'image', `${window.location.origin}/images/loaders/placeholder.gif`);
+
+      // Move cursor to right side of image (easier to continue typing)
+      quill.setSelection(range.index + 1);
+
+      try {
+        const res = await uploadImage(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
+        console.log(res);
+        // Remove placeholder image
+        // quill.deleteText(range.index, 1);
+
+        // Insert uploaded image
+        // this.quill.insertEmbed(range.index, 'image', res.body.image);
+        quill.insertEmbed(range.index, "image", res.data.path);
+        quill.setSelection(range.index + 1);
+      } catch (e) {
+        console.error(e);
+        alert("이미지 업로드에 실패하였습니다");
+      }
+    };
+  }, []);
+
+  const toolbarOptions = useMemo(
+    () => ({
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        [
+          { align: "" },
+          { align: "center" },
+          { align: "right" },
+          { align: "justify" },
+        ],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        ["blockquote", "code-block"],
+        ["link", "image"],
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+
+        ["clean"], // remove formatting button
+      ],
+      handlers: {
+        image: () => imageHandler(quillInstance.current),
+      },
+    }),
+    [imageHandler]
   );
 
   useEffect(() => {
@@ -47,10 +94,13 @@ const PostEditor = ({ body, setBody }) => {
 
     const quill = quillInstance.current;
     quill.on("text-change", (delta, oldDelta, source) => {
+      console.log(source);
       if (source === "user") {
         setBody(quill.root.innerHTML);
       }
     });
+
+    setQuill(quill);
   }, [setBody, toolbarOptions]);
 
   useEffect(() => {
@@ -97,6 +147,11 @@ const QuillWrapper = styled.div`
       overflow-x: scroll;
       padding: 10px 15px;
       border-radius: 10px;
+    }
+
+    p img {
+      max-height: 400px;
+      max-width: 100%;
     }
   }
 

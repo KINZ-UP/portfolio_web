@@ -9,7 +9,7 @@ const TagItem = ({ tag, onDelete }) => {
 };
 
 const StyledTagItem = styled.div`
-  padding: 0 0.6rem;
+  padding: 0 1rem;
   border-radius: 20rem;
   background: #e0e0e0;
   cursor: default;

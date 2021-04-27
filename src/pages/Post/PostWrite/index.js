@@ -11,7 +11,10 @@ const PostWrite = ({ history }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tags, setTags] = useState([]);
+  const [quill, setQuill] = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+
   const onChangeTitle = (e) => setTitle(e.target.value);
 
   const onClickSave = useCallback(() => {
@@ -23,17 +26,27 @@ const PostWrite = ({ history }) => {
       alert("내용을 입력하세요");
       return;
     }
+
+    // Thumbnail 이미지 주소 추출
+    const delta = quill.getContents();
+    let flag;
+    delta.ops.some((d) => {
+      flag = !!d.insert?.image;
+      if (flag) setThumbnail(d.insert.image);
+      return flag;
+    });
+
     setModalVisible(true);
-  }, [body, title]);
+  }, [body, quill, title]);
 
   const onCreatePost = useCallback(async () => {
     try {
-      await createPost({ title, body, tags });
+      await createPost({ title, body, tags, thumbnail });
       history.push("/blog");
     } catch (err) {
       console.log(err);
     }
-  }, [title, body, tags, history]);
+  }, [title, body, tags, thumbnail, history]);
 
   return (
     <StyledResponsive>
@@ -43,7 +56,7 @@ const PostWrite = ({ history }) => {
         onChange={onChangeTitle}
       />
       <TagBox tags={tags} setTags={setTags} />
-      <PostEditor body={body} setBody={setBody} />
+      <PostEditor body={body} setBody={setBody} setQuill={setQuill} />
       <div className="button-container">
         <Button onClick={onClickSave}>저장하기</Button>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getPosts } from "../../api/posts";
 import PostItemForm from "./PostItemForm";
@@ -8,7 +8,6 @@ const PostListForm = () => {
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);
   const [isNoMore, setIsNoMore] = useState(false);
-  const observerTarget = useRef(null);
 
   const [loading, response, error] = usePromise(
     () => getPosts({ offset, limit: 5 }),

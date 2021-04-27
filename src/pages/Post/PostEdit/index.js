@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { getPostById, createPost, updatePost } from "../../../api/posts";
+import { getPostById, updatePost } from "../../../api/posts";
 import PostEditor from "../../../components/Blog/PostEditor";
 import SaveModal from "../../../components/Blog/SaveModal";
 import TagBox from "../../../components/Blog/TagBox";
@@ -12,6 +12,8 @@ const PostEdit = ({ match, history }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tags, setTags] = useState([]);
+  const [quill, setQuill] = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   const [loading, response, error] = usePromise(
@@ -21,10 +23,11 @@ const PostEdit = ({ match, history }) => {
 
   useEffect(() => {
     if (response) {
-      const { title, body, tags } = response;
+      const { title, body, tags, thumbnail } = response;
       setTitle(title);
       setBody(body);
       setTags(tags);
+      setThumbnail(thumbnail);
     }
   }, [response]);
 
@@ -39,17 +42,30 @@ const PostEdit = ({ match, history }) => {
       alert("내용을 입력하세요");
       return;
     }
+
+    // Thumbnail 이미지 주소 추출
+    const delta = quill.getContents();
+    let flag;
+    delta.ops.some((d) => {
+      flag = !!d.insert?.image;
+      if (flag) setThumbnail(d.insert.image);
+      return flag;
+    });
+
     setModalVisible(true);
-  }, [body, title]);
+  }, [body, quill, title]);
 
   const onUpdatePost = useCallback(async () => {
     try {
-      await updatePost({ id: match.params._id, post: { title, body, tags } });
+      await updatePost({
+        id: match.params._id,
+        post: { title, body, tags, thumbnail },
+      });
       history.push("/blog");
     } catch (err) {
       console.log(err);
     }
-  }, [match.params._id, title, body, tags, history]);
+  }, [match.params._id, title, body, tags, thumbnail, history]);
 
   if (loading) return null;
 
@@ -61,7 +77,7 @@ const PostEdit = ({ match, history }) => {
         onChange={onChangeTitle}
       />
       <TagBox tags={tags} setTags={setTags} />
-      <PostEditor body={body} setBody={setBody} />
+      <PostEditor body={body} setBody={setBody} setQuill={setQuill} />
       <div className="button-container">
         <Button onClick={onClickSave}>수정하기</Button>
       </div>
