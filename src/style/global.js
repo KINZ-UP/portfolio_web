@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
       font-size: 80%;
     }
     @media (max-width: 568px){
-        font-size: 60%; 
+        font-size: 70%; 
     };      
   };
 `;
