@@ -79,7 +79,7 @@ const About = () => {
           <div className="sub-section">
             <h2 className="sub-title">PushNews</h2>
             <ul className="sub-section-content">
-              <li>2020.06 ~</li>
+              <li>2020.06 ~ 2021.04</li>
             </ul>
           </div>
         </section>
