@@ -19,6 +19,7 @@ const StyledPageContainer = styled.div`
 
   .inner-container {
     width: min(768px, 100%);
+    padding: 0 0.5rem;
     margin: 0 auto;
   }
 `;

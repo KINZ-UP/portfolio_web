@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import styled from "styled-components";
-import { withRouter } from "react-router-dom";
-import Quill from "quill";
-import "quill/dist/quill.snow.css";
-import hljs from "highlight.js";
-import "highlight.js/styles/stackoverflow-light.css";
-import { uploadImage } from "../../api/posts";
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/stackoverflow-light.css';
+import { uploadImage } from '../../api/posts';
 
 hljs.configure({
-  languages: ["javascript", "ruby", "python", "rust"],
+  languages: ['javascript', 'ruby', 'python', 'rust', 'bash'],
 });
 
 const PostEditor = ({ body, setBody, setQuill }) => {
@@ -17,17 +17,17 @@ const PostEditor = ({ body, setBody, setQuill }) => {
 
   const imageHandler = useCallback(async () => {
     const quill = quillInstance.current;
-    const input = document.createElement("input");
+    const input = document.createElement('input');
 
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
     input.click();
 
     input.onchange = async () => {
       const file = input.files[0];
       const formData = new FormData();
 
-      formData.append("image", file);
+      formData.append('image', file);
 
       // Save current cursor state
       const range = quill.getSelection(true);
@@ -46,11 +46,11 @@ const PostEditor = ({ body, setBody, setQuill }) => {
 
         // Insert uploaded image
         // this.quill.insertEmbed(range.index, 'image', res.body.image);
-        quill.insertEmbed(range.index, "image", res.data.path);
+        quill.insertEmbed(range.index, 'image', res.data.path);
         quill.setSelection(range.index + 1);
       } catch (e) {
         console.error(e);
-        alert("이미지 업로드에 실패하였습니다");
+        alert('이미지 업로드에 실패하였습니다');
       }
     };
   }, []);
@@ -60,18 +60,18 @@ const PostEditor = ({ body, setBody, setQuill }) => {
       container: [
         [{ header: [1, 2, 3, false] }],
         [
-          { align: "" },
-          { align: "center" },
-          { align: "right" },
-          { align: "justify" },
+          { align: '' },
+          { align: 'center' },
+          { align: 'right' },
+          { align: 'justify' },
         ],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["bold", "italic", "underline", "strike"], // toggled buttons
-        ["blockquote", "code-block"],
-        ["link", "image"],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+        ['blockquote', 'code-block'],
+        ['link', 'image'],
         [{ color: [] }, { background: [] }], // dropdown with defaults from theme
 
-        ["clean"], // remove formatting button
+        ['clean'], // remove formatting button
       ],
       handlers: {
         image: () => imageHandler(quillInstance.current),
@@ -82,8 +82,8 @@ const PostEditor = ({ body, setBody, setQuill }) => {
 
   useEffect(() => {
     quillInstance.current = new Quill(quillElement.current, {
-      theme: "snow",
-      placeholder: "내용을 작성하세요...",
+      theme: 'snow',
+      placeholder: '내용을 작성하세요...',
       modules: {
         syntax: {
           highlight: (text) => hljs.highlightAuto(text).value,
@@ -93,15 +93,14 @@ const PostEditor = ({ body, setBody, setQuill }) => {
     });
 
     const quill = quillInstance.current;
-    quill.on("text-change", (delta, oldDelta, source) => {
-      console.log(source);
-      if (source === "user") {
-        setBody(quill.root.innerHTML);
-      }
+    quill.on('text-change', (delta, oldDelta, source) => {
+      setBody(quill.root.innerHTML);
+      // if (source === 'user') {
+      // }
     });
 
     setQuill(quill);
-  }, [setBody, toolbarOptions]);
+  }, [setBody, setQuill, toolbarOptions]);
 
   useEffect(() => {
     quillInstance.current.root.innerHTML = body;
@@ -120,37 +119,78 @@ const QuillWrapper = styled.div`
     border: none;
   }
   .ql-editor {
-    height: 500px;
+    height: 800px;
     overflow: scroll;
     border-bottom: 1px solid #aaa;
-    font-size: 1.125rem;
-    line-height: 180%;
 
+    line-height: 180%;
+    font-size: 150%;
+
+    p {
+      margin-bottom: 0.5rem;
+    }
+
+    *:not(p, blockquote) {
+      margin: 0.5rem 0;
+    }
+
+    h1 {
+      margin-top: 4rem;
+      margin-bottom: 1.2rem;
+    }
     h2 {
-      margin-top: 3rem;
+      margin-top: 3.5rem;
       margin-bottom: 1rem;
+    }
+    h3 {
+      margin-top: 2.5rem;
+      margin-bottom: 0.8rem;
+    }
+    h4 {
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+    }
+    h5 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    ul,
+    ol {
+      padding-left: 2rem;
+      margin: 1rem 0;
     }
 
     ul {
-      margin-left: 3rem;
+      list-style-type: disc;
     }
 
     blockquote {
-      border-left: 7px solid #aad;
-      padding: 3px 3px 3px 10px;
-      background: #fcfcfc;
+      border-left: 7px solid #a3b88e;
+      padding: 0.4rem 0.4rem 0.4rem 0.625rem;
+      background: #edf3e6;
+    }
+
+    *:not(blockquote) + blockquote {
+      margin-top: 1rem;
+    }
+
+    blockquote + p {
+      margin-top: 1rem;
     }
 
     pre.ql-syntax {
-      color: #000;
-      background: #f9f9f9;
+      background: #f9f9fd;
       overflow-x: scroll;
-      padding: 10px 15px;
-      border-radius: 10px;
+      padding: 0.6rem 1rem;
+      border-radius: 0.6rem;
+      margin-bottom: 1rem;
+      line-height: 180%;
+      color: #000;
     }
 
-    p img {
-      max-height: 400px;
+    img,
+    video {
       max-width: 100%;
     }
   }
