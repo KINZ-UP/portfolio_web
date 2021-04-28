@@ -1,14 +1,15 @@
-import React, { useEffect, useMemo, useRef } from "react";
-import styled from "styled-components";
+import React, { useEffect, useMemo, useRef } from 'react';
+import styled from 'styled-components';
 
 const FetchMore = ({ loading, isNoMore, setOffset }) => {
   const observerTarget = useRef(null);
   const observer = useMemo(
     () =>
       new IntersectionObserver(([{ isIntersecting }]) => {
-        if (isIntersecting && !isNoMore) setOffset((offset) => offset + 5);
+        if (isIntersecting && !loading && !isNoMore)
+          setOffset((offset) => offset + 5);
       }),
-    [isNoMore, setOffset]
+    [loading, isNoMore, setOffset]
   );
 
   useEffect(() => {
@@ -20,9 +21,9 @@ const FetchMore = ({ loading, isNoMore, setOffset }) => {
   return (
     <FetchMoreTarget
       id="fetchMore"
-      className={loading ? "loading" : ""}
+      className={loading ? 'loading' : ''}
       ref={observerTarget}
-      style={{ height: "1px" }}
+      style={{ height: '1px' }}
     />
   );
 };
@@ -30,7 +31,7 @@ const FetchMore = ({ loading, isNoMore, setOffset }) => {
 const FetchMoreTarget = styled.div`
   &.loading {
     :after {
-      content: "LOADING";
+      content: 'LOADING';
       position: fixed;
       bottom: 0;
       left: 0;
