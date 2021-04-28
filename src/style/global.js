@@ -1,6 +1,10 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+
+  body {
+    --tagHeight: 1.6rem;
+  }
 
   @font-face {
     font-family: "SsangmunDong";
@@ -15,6 +19,8 @@ const GlobalStyle = createGlobalStyle`
         font-size: 70%; 
     };      
   };
+
+  
 `;
 
 export default GlobalStyle;

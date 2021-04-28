@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 const TagItem = ({ tag, onDelete }) => {
   return <StyledTagItem onClick={onDelete}>{tag}</StyledTagItem>;
@@ -16,14 +16,14 @@ const StyledTagItem = styled.div`
 `;
 
 const TagBox = ({ tags, setTags }) => {
-  const [inputTag, setInputTag] = useState("");
+  const [inputTag, setInputTag] = useState('');
 
   const createTag = useCallback(
     (value) => {
       if (!tags.includes(value)) {
         setTags(tags.concat(value));
       }
-      setInputTag("");
+      setInputTag('');
     },
     [tags, setTags]
   );
@@ -34,7 +34,7 @@ const TagBox = ({ tags, setTags }) => {
       const l = value.length;
       const lastInput = value[l - 1];
 
-      if (lastInput === ",") {
+      if (lastInput === ',') {
         createTag(value.slice(0, l - 1));
         return;
       }
@@ -78,8 +78,6 @@ const StyledTagBox = styled.div`
   display: flex;
   margin-bottom: 0.6rem;
   font-size: 1rem;
-
-  --tagHeight: 1.6rem;
 `;
 const TagInput = styled.input`
   border: none;

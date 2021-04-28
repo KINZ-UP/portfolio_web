@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import moment from "moment";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const PostItemForm = ({ post, className }) => {
   const { _id, title, body, thumbnail, tags, createdAt } = post;
@@ -22,7 +22,7 @@ const PostItemForm = ({ post, className }) => {
             ))}
           </ul>
           <p className="post-created">
-            {moment(createdAt).format("YYYY년 MM월 DD일")}
+            {moment(createdAt).format('YYYY년 MM월 DD일')}
           </p>
         </div>
       </div>
@@ -31,9 +31,11 @@ const PostItemForm = ({ post, className }) => {
 };
 
 const StyledPostItemForm = styled.div`
-  padding: 1rem 0;
+  padding: 1.5rem 1rem;
   margin-bottom: 2rem;
-  border-bottom: 1px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
+  background: #fff;
+  box-shadow: 2px 2px 8px #999;
 
   .post-content {
     display: flex;

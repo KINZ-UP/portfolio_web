@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { getPosts } from "../../api/posts";
-import PostItemForm from "./PostItemForm";
-import usePromise from "../../lib/usePromise";
-import FetchMore from "./FetchMore";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { getPosts } from '../../api/posts';
+import PostItemForm from './PostItemForm';
+import usePromise from '../../lib/usePromise';
+import FetchMore from './FetchMore';
 const PostListForm = () => {
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);
@@ -16,8 +16,9 @@ const PostListForm = () => {
 
   useEffect(() => {
     if (response) {
+      console.log(response);
       setPosts((posts) => [...posts, ...response]);
-      if (response.length === 0) setIsNoMore(true);
+      if (response.length < 5) setIsNoMore(true);
     }
   }, [response]);
 
@@ -28,6 +29,7 @@ const PostListForm = () => {
       {posts.map((post) => (
         <PostItemForm key={post._id} post={post} />
       ))}
+
       <FetchMore loading={loading} isNoMore={isNoMore} setOffset={setOffset} />
     </StyledPostListForm>
   );
